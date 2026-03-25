@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura | Immersive Sound</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .section {
+            position: relative;
+            z-index: 20;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            pointer-events: none;
+        }
+        .content-box {
+            max-width: 600px;
+            pointer-events: auto;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+        .color-dot:hover {
+            transform: scale(1.2);
+        }
+        .color-dot.active {
+            border-color: white;
+        }
+        .interactive-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+            cursor: grab;
+        }
+        .interactive-overlay:active {
+            cursor: grabbing;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #a1a1a1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Background Container -->
+    <div id="canvas-container"></div>
+    <div class="interactive-overlay" id="touch-zone"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center px-10">
+        <div class="text-2xl font-extrabold tracking-tighter">AURA</div>
+        <div class="hidden md:flex space-x-10 text-sm font-medium tracking-widest uppercase">
+            <a href="#" class="nav-link">Design</a>
+            <a href="#" class="nav-link">Acoustics</a>
+            <a href="#" class="nav-link">Specs</a>
+        </div>
+        <button class="bg-white text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-200 transition-colors">Order Now</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="section">
+        <div class="content-box ml-10">
+            <h1 class="text-7xl md:text-9xl font-extrabold tracking-tighter mb-4 leading-none">
+                SOUND <br> <span class="text-gray-500">EVOLVED.</span>
+            </h1>
+            <p class="text-lg text-gray-400 max-w-md mb-8">
+                Experience spatial audio like never before. The new Aura Wireless features custom-tuned drivers and adaptive noise cancellation.
+            </p>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-bold uppercase tracking-widest text-gray-500">Choose Finish</span>
+                <div class="flex space-x-3">
+                    <div class="color-dot active bg-gray-400" data-color="#808080"></div>
+                    <div class="color-dot bg-blue-600" data-color="#2563eb"></div>
+                    <div class="color-dot bg-red-600" data-color="#dc2626"></div>
+                    <div class="color-dot bg-black border border-gray-700" data-color="#111111"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section 1 -->
+    <section class="section justify-end">
+        <div class="content-box glass p-10 mr-10">
+            <h2 class="text-4xl font-bold mb-4">Precision Engineering</h2>
+            <p class="text-gray-400 mb-6 leading-relaxed">
+                Machined aluminum components meet surgical-grade stainless steel. Every curve is designed for acoustic perfection and all-day comfort.
+            </p>
+            <ul class="space-y-3 text-sm font-medium">
+                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span> 40mm Dynamic Driver</li>
+                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span> 30-Hour Battery Life</li>
+                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span> Zero-Latency Wireless</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Specs Section -->
+    <section class="section">
+        <div class="content-box ml-10">
+            <h2 class="text-5xl font-extrabold mb-10">THE TECH</h2>
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Audio</h4>
+                    <p class="text-xl font-semibold">Lossless Spatial Audio</p>
+                </div>
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Chip</h4>
+                    <p class="text-xl font-semibold">H2 Aura Silicon</p>
+                </div>
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Bluetooth</h4>
+                    <p class="text-xl font-semibold">5.3 Ultra Stable</p>
+                </div>
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Weight</h4>
+                    <p class="text-xl font-semibold">280 Grams</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let scene, camera, renderer, headphones, materials = [];
+        let mouseX = 0, mouseY = 0;
+        let targetRotationX = 0, targetRotationY = 0;
+        let currentRotationX = 0, currentRotationY = 0;
+
+        function init3D() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(5, 5, 5);
+            scene.add(mainLight);
+
+            const rimLight = new THREE.PointLight(0x0066ff, 1, 10);
+            rimLight.position.set(-5, 0, -2);
+            scene.add(rimLight);
+
+            // Geometry - Simple procedural headphones model
+            headphones = new THREE.Group();
+
+            const headBandMat = new THREE.MeshPhysicalMaterial({ color: 0x222222, roughness: 0.1, metalness: 0.8 });
+            const cupMat = new THREE.MeshPhysicalMaterial({ color: 0x808080, roughness: 0.2, metalness: 0.9, clearcoat: 1 });
+            const padMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: 0.8, metalness: 0 });
+            
+            materials.push(cupMat); // Track cup material for color changes
+
+            // Headband
+            const bandGeo = new THREE.TorusGeometry(1.5, 0.12, 16, 100, Math.PI);
+            const band = new THREE.Mesh(bandGeo, headBandMat);
+            band.rotation.z = Math.PI / 2;
+            band.position.y = 0.5;
+            headphones.add(band);
+
+            // Earpieces
+            [-1.5, 1.5].forEach(x => {
+                const cupGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.4, 32);
+                const cup = new THREE.Mesh(cupGeo, cupMat);
+                cup.position.set(x, 0.2, 0);
+                cup.rotation.z = Math.PI / 2;
+                
+                const padGeo = new THREE.CylinderGeometry(0.65, 0.65, 0.2, 32);
+                const pad = new THREE.Mesh(padGeo, padMat);
+                pad.position.set(x > 0 ? x - 0.2 : x + 0.2, 0.2, 0);
+                pad.rotation.z = Math.PI / 2;
+                
+                headphones.add(cup);
+                headphones.add(pad);
+            });
+
+            scene.add(headphones);
+            camera.position.z = 5;
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth rotation logic
+            currentRotationX += (targetRotationX - currentRotationX) * 0.05;
+            currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+
+            headphones.rotation.y = currentRotationY;
+            headphones.rotation.x = currentRotationX;
+
+            // Subtle floating animation
+            headphones.position.y = Math.sin(Date.now() * 0.001) * 0.15;
+
+            renderer.render(scene, camera);
+        }
+
+        // Interactivity
+        const touchZone = document.getElementById('touch-zone');
+        let isDragging = false;
+        let previousMouseX = 0;
+        let previousMouseY = 0;
+
+        touchZone.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMouseX = e.clientX;
+            previousMouseY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const deltaX = e.clientX - previousMouseX;
+                const deltaY = e.clientY - previousMouseY;
+                targetRotationY += deltaX * 0.01;
+                targetRotationX += deltaY * 0.01;
+                previousMouseX = e.clientX;
+                previousMouseY = e.clientY;
+            }
+        });
+
+        // Color Switching
+        document.querySelectorAll('.color-dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+                
+                const color = dot.getAttribute('data-color');
+                gsap.to(materials[0].color, {
+                    r: new THREE.Color(color).r,
+                    g: new THREE.Color(color).g,
+                    b: new THREE.Color(color).b,
+                    duration: 0.8
+                });
+            });
+        });
+
+        // Scroll Logic
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            
+            // Move headphones based on scroll
+            gsap.to(headphones.position, {
+                x: scrollPercent < 0.3 ? 0.8 : (scrollPercent > 0.6 ? -0.8 : 0),
+                duration: 1
+            });
+
+            gsap.to(headphones.scale, {
+                x: 1 + scrollPercent,
+                y: 1 + scrollPercent,
+                z: 1 + scrollPercent,
+                duration: 1
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.onload = init3D;
+    </script>
+</body>
+</html>
